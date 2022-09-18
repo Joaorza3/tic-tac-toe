@@ -1,5 +1,8 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+
+app.use(cors());
 
 const { v4: uuid } = require('uuid');
 
@@ -82,8 +85,11 @@ app.get('/play/:gameId/:gamePassword/:row/:col', (req, res) => {
 
         game.setBoard(gameData.board);
         game.setCurrentPlayer(gameData.player);
-
-        game.play(row, col);
+        
+        if(gameData.winner === null){          
+    
+            game.play(row, col);
+        }
 
         const board = game.getBoard();
         const player = game.getCurrentPlayer();
@@ -101,6 +107,7 @@ app.get('/play/:gameId/:gamePassword/:row/:col', (req, res) => {
 
         res.json({
             gameId: gameId,
+            gamePassword: gamePassword,
             board: board,
             player: player,
             winner: winner,
@@ -112,8 +119,8 @@ app.get('/play/:gameId/:gamePassword/:row/:col', (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
+app.listen(3333, () => {
+    console.log('Server running on port 3333');
 });
 
 
